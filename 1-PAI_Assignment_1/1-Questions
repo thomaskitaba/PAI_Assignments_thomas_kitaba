@@ -1,0 +1,86 @@
+1. Longest Increasing Subsequence (LIS)
+Problem:
+Given an unsorted array of integers, find the length of the longest increasing subsequence. A subsequence is defined as a sequence derived by deleting some or no elements from the array without changing the order of the remaining elements.
+Example:
+arr = [10, 22, 9, 33, 21, 50, 41, 60, 80]
+# The longest increasing subsequence is [10, 22, 33, 50, 60, 80], so the output should be 6.
+
+Hint:
+Use dynamic programming or binary search for optimization. The brute force solution has a time complexity of O(2^n), but you can optimize it to O(n^2) using dynamic programming, or even O(n log n) with binary search and a clever approach.
+
+
+2. Sudoku Solver
+Problem:
+Write a function that takes a partially filled 9x9 Sudoku board and fills in the missing values to solve it. If the board is unsolvable, return False.
+Example:
+board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+# The function should fill in the board and return True if solved.
+Hint:
+This problem can be solved using backtracking. Try to fill each empty space with numbers from 1 to 9, and recursively check if the number placement is valid. If the board is valid, continue; if not, backtrack and try a different number.
+
+
+3. N-Queens Problem
+Problem:
+Solve the N-Queens problem, which asks you to place N queens on an NxN chessboard such that no two queens threaten each other. A queen can attack another queen if they are on the same row, column, or diagonal.
+Example:
+For N = 4, one valid solution would be:
+[ [0, 1, 2, 3], 
+  [1, 3, 0, 2], 
+  [2, 0, 3, 1], 
+  [3, 2, 1, 0] ]
+
+Hint:
+You can solve this problem using backtracking. Keep track of columns, main diagonals, and anti-diagonals where queens have already been placed to avoid conflicts.
+
+
+4. Word Ladder
+Problem:
+Given two words (beginWord and endWord), and a dictionary of words, find the shortest transformation sequence from beginWord to endWord, such that:
+Only one letter can be changed at a time.
+Each transformed word must exist in the dictionary.
+For example:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot", "dot", "dog", "lot", "log", "cog"]
+# The shortest transformation sequence is: "hit" -> "hot" -> "dot" -> "dog" -> "cog"
+
+Hint:
+Use breadth-first search (BFS) to explore the word transformation graph. Each word is a node, and each letter change forms an edge. Keep track of the visited nodes to avoid cycles and redundant work.
+
+5. Find the Median of Two Sorted Arrays
+Problem:
+Given two sorted arrays nums1 and nums2, find the median of the two sorted arrays. The overall run time complexity should be O(log(min(n, m))) where n and m are the lengths of the arrays.
+Example:
+nums1 = [1, 3]
+nums2 = [2]
+# The median is 2.0
+
+Hint:
+This is a classic binary search problem. Instead of merging the arrays (which takes O(n+m) time), use binary search to partition the arrays in such a way that the left part and the right part of the merged array are balanced.
+
+6. Graph Cycle Detection (Directed Graph)
+Problem:
+Given a directed graph, determine if there is a cycle in the graph. If there is a cycle, return True; otherwise, return False.
+Example:
+graph = {
+    0: [1],
+    1: [2],
+    2: [3],
+    3: [0]
+}
+# This graph contains a cycle, so the result should be True.
+
+Hint:
+This is a classic graph traversal problem. Use Depth First Search (DFS) with a recursion stack (or a visited list) to track the state of each node. If you revisit a node that is already in the recursion stack, you have detected a cycle.
+
+
