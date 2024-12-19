@@ -20,21 +20,30 @@ def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
         if start not in rec_path:
             rec_path.append(start)
         if start in visited:
-            return 
+            return
+        
+        visited.add(start)
         if start == goal:
             info = {}
             info[f"{strategy} Path"] = list(rec_path)
             info["with cost"] = distance
             all_paths.append(info)
             rec_path.pop()  # go one step back in your path
+            # visited.add(start)
             return
-        visited.add(start)
+        
         for neigbors in roads.get(start):
-            dfs(neigbors[0], goal, rec_path, neigbors[1] + distance)
+            value = 0
+            if len(neigbors) > 1:
+                value = neigbors[1]
+            else:
+                value = 1
+            dfs(neigbors[0], goal, rec_path, value + distance)
         rec_path.pop()
     
     def bfs(stat, end, path, distance):
         print("bfs selected")
+        
         
     if strategy == "DFS":
         dfs(start_city, goal_city, [], 0)
@@ -50,16 +59,21 @@ roads = {
     'Mekelle': [('Gondar', 300)]
 }
 
-random_index = random.randint(0, len(cities) - 1)
-print(random_index)
-start_city = cities[random_index]
-goal_city = "Bahir Dar"
+# select random city
+start_city = cities[random.randint(0, len(cities) - 1)]
+goal_city = cities[random.randint(0, len(cities) - 1)]
 strategy = "DFS"
+# initialize all_paths list and visited set
 all_paths = []
 visited = set()
 
 # find shortest path from start to goal city using uninformed search
+
 uninformed_path_finder(cities, roads, start_city, goal_city, strategy)
+
+# get the shortest path among all the other paths
 shortest_path = [path for path in all_paths if path["with cost"] == min(list(d["with cost"] for d in all_paths)) ]
 print(shortest_path)
 
+
+# print(f'visited: {visited}')
