@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import random
+import random deque
 def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
     """
     Parameters:
@@ -42,7 +42,7 @@ def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
         rec_path.pop()
     
     def bfs(stat, end, path, distance):
-        print("bfs selected")
+        print(f"{strategy} unweighted")
         
         
     if strategy == "DFS":
