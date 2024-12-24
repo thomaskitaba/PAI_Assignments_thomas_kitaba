@@ -2,7 +2,7 @@
 import random
 from collections import deque
 
-def traverse_all_cities(cities, roads, start_city, strategy):
+def traverse_all_cities(cities, roads, start_city, strategy, adversary):
     """
     Parameters:
     - cities: List of city names.
@@ -27,31 +27,34 @@ def traverse_all_cities(cities, roads, start_city, strategy):
             data[f"{strategy}"] = list(visited)
             data["with cost"] = total_distance
             all_paths.append(data)
-            # all_paths.append(list(visited))
+    
+            
+    # Depth First Search            
     def dfs(city, path, distance):
         """
         Depth-First Search (DFS) traversal of the graph.
         Parameters:
         - city: The current city.
         - path: The traversal path.
-        - cost: The total cost (distance) of the traversal.
+        - distance: The total cost (distance) of the traversal.
         """
+        if city == adversary:
+            return
         if city not in path:
             path.append(city)
         else:
             return
-        if city == "Gondar":
-            return
+        
         for c, neighbor in roads.get(city, []):
-            print(f"c={c}    neighbor={neighbor}")
+            # if the road has weight use it else use 1 as defaul
             value = neighbor if neighbor else 1
-            print(c)
             dfs(c, path, distance + value)     
+        # add path to all_path list
         fill_path(path, distance, strategy)
-        # visited.remove(city)
         path.pop()   # remove city from the path so as to chang other path
     
-    def bfs(city, path, cost):
+    # Breadth First Search
+    def bfs(start, path, distance):
         """
         Breadth-First Search (BFS) traversal of the graph.
         Parameters:
@@ -59,37 +62,44 @@ def traverse_all_cities(cities, roads, start_city, strategy):
         - path: The traversal path
         - cost: The total cost (distance) of the traversal.
         """
-        print("BFS")
-        path = []
+        print(f"{strategy} unweighted")
         
-        queue = deque([[city, 0, path]])
-        print(queue)
-        n = len(roads.keys())
-        visited = set()
-        
+        # create a queue to hold node information
+        queue = deque([[start, distance, path]])
+        # loop until queue is empty to do a level order search
         while queue:
-            # Code goes here    
-            current_node, cost, path = queue.popleft()
+            #
+            current_city, cost, path = queue.popleft()
             
-            visited.add(current_node)
-            path.append(current_node)
-            # visit negbors of current_node
-            for c, negbor in roads.get(current_node, []):
-                print(f"c={c}    neighbor={negbor}")
-                if negbor not in visited:
-                    value = negbor if negbor else 1
-                    print(negbor)
-                    visited.add(negbor)
-                    queue.append([c, cost + value, path + [negbor]])
-            print(path)
-        return None
-        
+            if current_city not in path:
+                path.append(current_city)
+            else:
+                # print(f"Goal {current_city} found with cost {cost}")
+                data = {}
+                data[f"{strategy}"] = list(path)
+                data["with cost"] = cost
+                all_paths.append(data)
+                print(data)
+            
+            # now do a level order traversal using for loop
+            for neigbor, distance in roads.get(current_city, []): # unpack city and 
+                # if the city has adversary then dont go through that city
+                if neigbor == adversary:
+                    continue
+                if neigbor not in path:
+                    value = distance if distance else 1
+                    # add negibor to queue if its is in visited earlier
+                    queue.append([neigbor, cost + value, path + [neigbor]])
+        return all_paths
+            
     if strategy.lower() == "dfs": 
         for start_city in cities:
             dfs(start_city, [], 0)
             
     elif strategy.lower() == "bfs":
         bfs(start_city, [], 0)
+        
+    return all_paths
 
 cities = ['Addis Ababa', 'Bahir Dar', 'Gondar', 'Hawassa', 'Mekelle']
 roads = {
@@ -97,15 +107,15 @@ roads = {
     'Bahir Dar': [('Addis Ababa', 510), ('Gondar', 180)],
     'Gondar': [('Bahir Dar', 180), ('Mekelle', 300)],
     'Hawassa': [('Addis Ababa', 275)],
-    'Mekelle': [('Gondar', 300)]
+    'Mekelle': [('Gondar', 300), ('Hawassa', 100)]
 }
 
 start_city = "Addis Ababa"
-strategy = "BFS"
+strategy = "DFS"
 all_paths = []
 visited = set()
-danger = "Gondar"
-traverse_all_cities(cities, roads, start_city, strategy)
-print(all_paths)
+adversary = "Gondar"
+result = traverse_all_cities(cities, roads, start_city, strategy, adversary)
 
-
+for path in result:
+    print(path)

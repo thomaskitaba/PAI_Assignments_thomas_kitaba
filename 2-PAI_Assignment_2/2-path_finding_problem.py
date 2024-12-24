@@ -59,7 +59,8 @@ def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
                 data[f"{strategy}"] = list(path)
                 data["with cost"] = cost
                 all_paths.append(data)
-                return all_paths
+                continue
+                # return all_paths
             # now do a level order traversal using for loop
             for neigbor, distance in roads.get(current_city, []):  # unpack city and 
                 # print(f" neigbor={neigbor} distance={distance}")
@@ -92,7 +93,7 @@ start_city = "Addis Ababa"
 goal_city = "Hawassa"
 
 
-strategy = "DFS"
+strategy = "BFS"
 # initialize all_paths list and visited set
 all_paths = []
 visited = set()
