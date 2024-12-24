@@ -17,7 +17,6 @@ def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
     - cost: Total cost (number of steps or distance) of the path.
     """
     
-
     def dfs(start, goal, rec_path, distance):
         if start not in rec_path:
             rec_path.append(start)
@@ -42,9 +41,34 @@ def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
         visited.remove(start)
         rec_path.pop()
     
-    def bfs(stat, end, path, distance):
+    def bfs(start, goal, path, distance):
         print(f"{strategy} unweighted")
+        queue = deque([[start, distance, path]])
+      
         
+        while queue:
+            current_city, cost, path = queue.popleft()
+            print(f"Popped = {current_city}")
+            # just in case check if poped item is in visited
+            if current_city not in visited:
+                visited.add(current_city)
+                path.append(current_city)
+            print(path)
+            if current_city == goal:
+                print(f"Goal {current_city} found with cost {cost}")
+                data = {}
+                data[f"{strategy}"] = list(path)
+                data["with cost"] = cost
+                all_paths.append(data)
+                return
+            # now do a level order traversal using for loop
+            for neigbor, distance in roads.get(current_city, []):  # unpack city and 
+                # print(f" neigbor={neigbor} distance={distance}")
+                if neigbor not in visited:
+                    value = distance if distance else 1
+                    visited.add(neigbor)
+                    queue.append([neigbor, cost + value, path + [neigbor]])
+            
     if strategy == "DFS":
         dfs(start_city, goal_city, [], 0)
         
@@ -68,7 +92,7 @@ start_city = "Addis Ababa"
 goal_city = "Hawassa"
 
 print(f'{start_city} to {goal_city}')
-strategy = "DFS"
+strategy = "BFS"
 # initialize all_paths list and visited set
 all_paths = []
 visited = set()
