@@ -45,22 +45,21 @@ def uninformed_path_finder(cities, roads, start_city, goal_city, strategy):
         print(f"{strategy} unweighted")
         queue = deque([[start, distance, path]])
       
-        
         while queue:
             current_city, cost, path = queue.popleft()
-            print(f"Popped = {current_city}")
+            # print(f"Popped = {current_city}")
             # just in case check if poped item is in visited
             if current_city not in visited:
                 visited.add(current_city)
                 path.append(current_city)
-            print(path)
+            # print(path)
             if current_city == goal:
-                print(f"Goal {current_city} found with cost {cost}")
+                # print(f"Goal {current_city} found with cost {cost}")
                 data = {}
                 data[f"{strategy}"] = list(path)
                 data["with cost"] = cost
                 all_paths.append(data)
-                return
+                return all_paths
             # now do a level order traversal using for loop
             for neigbor, distance in roads.get(current_city, []):  # unpack city and 
                 # print(f" neigbor={neigbor} distance={distance}")
@@ -81,6 +80,7 @@ roads = {
     'Bahir Dar': [('Addis Ababa', 510), ('Gondar', 180)],
     'Gondar': [('Bahir Dar', 180), ('Mekelle', 300)],
     'Hawassa': [('Addis Ababa', 275)],
+    
     'Mekelle': [('Gondar', 300), ('Hawassa', 275)]
 }
 
@@ -91,19 +91,25 @@ goal_city = cities[random.randint(0, len(cities) - 1)]
 start_city = "Addis Ababa"
 goal_city = "Hawassa"
 
-print(f'{start_city} to {goal_city}')
-strategy = "BFS"
+
+strategy = "DFS"
 # initialize all_paths list and visited set
 all_paths = []
 visited = set()
 
 # find shortest path from start to goal city using uninformed search
 uninformed_path_finder(cities, roads, start_city, goal_city, strategy)
+
+# Print all possible paths and shortest path among those paths
+print("====================================")
+print("All Paths")
 print(all_paths)
-# get the shortest path among all the other paths
+print("====================================")
+print("Shortest Path")
 if all_paths:
     shortest_path = [path for path in all_paths if path["with cost"] == min(list(d["with cost"] for d in all_paths)) ]
     print(shortest_path)
+    print("====================================")
 else:
     print("No Path found")
 
