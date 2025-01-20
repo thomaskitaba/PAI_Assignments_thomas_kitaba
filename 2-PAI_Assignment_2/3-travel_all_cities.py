@@ -110,11 +110,13 @@ roads = {
     'Mekelle': [('Gondar', 300), ('Hawassa', 100)]
 }
 
+
 start_city = "Addis Ababa"
 strategy = "DFS"
 all_paths = []
 visited = set()
 adversary = "Gondar"
+
 result = traverse_all_cities(cities, roads, start_city, strategy, adversary)
 
 for path in result:
